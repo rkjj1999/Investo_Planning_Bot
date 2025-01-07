@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investo Bot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .infographic {
+            padding: 20px;
+            background-color: #e9f7fe;
+            border-left: 4px solid #007bff;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f4f4f4;
+        }
+        .table a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .table a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Investo Bot</h1>
+    </header>
+
+    <div class="container">
+        <h2>Enter Your Details</h2>
+        <div class="form-group">
+            <label for="monthlyIncome">Monthly Income (₹):</label>
+            <input type="number" id="monthlyIncome" placeholder="Enter your monthly income">
+        </div>
+
+        <div class="form-group">
+            <label for="monthlyExpenses">Monthly Expenses (₹):</label>
+            <input type="number" id="monthlyExpenses" placeholder="Enter your monthly expenses">
+        </div>
+
+        <div class="form-group">
+            <label for="currentDebt">Current Debt Obligations (₹):</label>
+            <input type="number" id="currentDebt" placeholder="Enter your current debt">
+        </div>
+
+        <div class="form-group">
+            <label for="savings">Existing Savings (₹):</label>
+            <input type="number" id="savings" placeholder="Enter your current savings">
+        </div>
+
+        <div class="form-group">
+            <label for="goalAmount">Goal Amount (₹):</label>
+            <input type="number" id="goalAmount" placeholder="Enter your financial goal amount">
+        </div>
+
+        <div class="form-group">
+            <label for="timeHorizon">Time Horizon (Years):</label>
+            <input type="number" id="timeHorizon" placeholder="Enter the number of years to achieve your goal">
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" placeholder="Enter your age">
+        </div>
+
+        <div class="form-group">
+            <label for="riskTolerance">Risk Tolerance:</label>
+            <select id="riskTolerance">
+                <option value="conservative">Conservative</option>
+                <option value="moderate">Moderate</option>
+                <option value="aggressive">Aggressive</option>
+            </select>
+        </div>
+
+        <button onclick="generateInvestmentPlan()">Generate Investment Plan</button>
+
+        <div class="results" id="results">
+            <!-- Results will appear here -->
+        </div>
+    </div>
+
+    <script>
+        function generateInvestmentPlan() {
+            const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value) || 0;
+            const monthlyExpenses = parseFloat(document.getElementById('monthlyExpenses').value) || 0;
+            const currentDebt = parseFloat(document.getElementById('currentDebt').value) || 0;
+            const savings = parseFloat(document.getElementById('savings').value) || 0;
+            const goalAmount = parseFloat(document.getElementById('goalAmount').value) || 0;
+            const timeHorizon = parseInt(document.getElementById('timeHorizon').value) || 0;
+            const age = parseInt(document.getElementById('age').value) || 0;
+            const riskTolerance = document.getElementById('riskTolerance').value;
+
+            // Calculate disposable income
+            const disposableIncome = monthlyIncome - monthlyExpenses - currentDebt / 12;
+            const suggestedInvestment = disposableIncome * 0.5; // 50% of disposable income
+
+            // Calculate total investment over time horizon
+            const totalInvestment = suggestedInvestment * 12 * timeHorizon;
+
+            // Determine risk profile and allocation
+            let allocation = [];
+            if (riskTolerance === 'conservative') {
+                allocation = [
+                    { asset: 'Stocks', type: 'Equity', allocation: 20, link: 'https://www.investopedia.com/terms/s/stock.asp', returns: 0.07 },
+                    { asset: 'Bonds', type: 'Debt', allocation: 50, link: 'https://www.investopedia.com/terms/b/bond.asp', returns: 0.04 },
+                    { asset: 'Gold', type: 'Commodity', allocation: 20, link: 'https://www.investopedia.com/terms/g/gold-standard.asp', returns: 0.05 },
+                    { asset: 'Real Estate', type: 'REIT', allocation: 10, link: 'https://www.investopedia.com/terms/r/reit.asp', returns: 0.06 }
+                ];
+            } else if (riskTolerance === 'moderate') {
+                allocation = [
+                    { asset: 'Stocks', type: 'Equity', allocation: 40, link: 'https://www.investopedia.com/terms/s/stock.asp', returns: 0.09 },
+                    { asset: 'Bonds', type: 'Debt', allocation: 30, link: 'https://www.investopedia.com/terms/b/bond.asp', returns: 0.05 },
+                    { asset: 'Gold', type: 'Commodity', allocation: 15, link: 'https://www.investopedia.com/terms/g/gold-standard.asp', returns: 0.06 },
+                    { asset: 'Cryptocurrency', type: 'Digital Asset', allocation: 5, link: 'https://www.investopedia.com/terms/c/cryptocurrency.asp', returns: 0.12 },
+                    { asset: 'Real Estate', type: 'REIT', allocation: 10, link: 'https://www.investopedia.com/terms/r/reit.asp', returns: 0.07 }
+                ];
+            } else if (riskTolerance === 'aggressive') {
+                allocation = [
+                    { asset: 'Stocks', type: 'Equity', allocation: 60, link: 'https://www.investopedia.com/terms/s/stock.asp', returns: 0.12 },
+                    { asset: 'Bonds', type: 'Debt', allocation: 10, link: 'https://www.investopedia.com/terms/b/bond.asp', returns: 0.04 },
+                    { asset: 'Gold', type: 'Commodity', allocation: 10, link: 'https://www.investopedia.com/terms/g/gold-standard.asp', returns: 0.06 },
+                    { asset: 'Cryptocurrency', type: 'Digital Asset', allocation: 10, link: 'https://www.investopedia.com/terms/c/cryptocurrency.asp', returns: 0.15 },
+                    { asset: 'Real Estate', type: 'REIT', allocation: 10, link: 'https://www.investopedia.com/terms/r/reit.asp', returns: 0.08 }
+                ];
+            }
+
+            // Calculate returns for each asset allocation
+            let totalReturns = 0;
+            const assetReturns = allocation.map(asset => {
+                const investedAmount = (totalInvestment * asset.allocation) / 100;
+                const returnAmount = investedAmount * Math.pow(1 + asset.returns, timeHorizon);
+                totalReturns += returnAmount;
+                return {
+                    ...asset,
+                    investedAmount: investedAmount.toFixed(2),
+                    returnAmount: returnAmount.toFixed(2)
+                };
+            });
+
+            // Display results as an infographic
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="infographic">
+                    <h3>Investment Plan Infographic</h3>
+                    <p><strong>Monthly Disposable Income:</strong> ₹${disposableIncome.toLocaleString()}</p>
+                    <p><strong>Suggested Monthly Investment:</strong> ₹${suggestedInvestment.toLocaleString()}</p>
+                    <p><strong>Total Investment Over ${timeHorizon} Years:</strong> ₹${totalInvestment.toLocaleString()}</p>
+                    <h4>Asset Allocation & Returns</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Asset Name</th>
+                                <th>Asset Type</th>
+                                <th>Allocation (%)</th>
+                                <th>Invested Amount (₹)</th>
+                                <th>Return Amount (₹)</th>
+                                <th>Learn More</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${assetReturns.map(asset => `
+                                <tr>
+                                    <td>${asset.asset}</td>
+                                    <td>${asset.type}</td>
+                                    <td>${asset.allocation}%</td>
+                                    <td>₹${parseFloat(asset.investedAmount).toLocaleString()}</td>
+                                    <td>₹${parseFloat(asset.returnAmount).toLocaleString()}</td>
+                                    <td><a href="${asset.link}" target="_blank">Link</a></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <p><strong>Total Returns After ${timeHorizon} Years:</strong> ₹${totalReturns.toLocaleString()}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
